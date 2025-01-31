@@ -253,23 +253,38 @@ public class HW1 {
             // Initialize largest index to -1 to indicate k is not found
             int largestIndex = -1;
 
-            // Initialize current index to 0
-            int index = 0;
+            // Initialize current index to size of stack, since top value is last in
+            int index = stack.size();
 
-            // Traverse stack so long as it is not empty
-            while (!stack.isEmpty()) {
-                int value = stack.pop();
+            // Guard against empty stack
+            if (stack.size() == 0) {
+                largestIndex = -1;
+            }
 
-                // If popped value equals our target, update largest index
-                if (value == k) {
-                    largestIndex = index;
+            // Initialize boolean variable to track if k is found
+            boolean found = false;
+
+            // Traverse stack so long as it is not empty and k is not found
+            while (!stack.isEmpty() && !found) {
+
+                // Initialize top value to top of stack without removing it
+                int topValue = stack.peek();
+
+                // Pop top element off original stack and store it in temporary stack
+                tempStack.push(stack.pop());
+
+                // If popped value equals our target, update found to true, break while loop
+                if (topValue == k) {
+                    found = true;
                 }
 
-                // Restore original stack and continue to iterate stack
-                tempStack.push(value);
-                index++;
+                // Continue to iterate stack from top-down
+                index--;
 
             }
+
+            // Update largest index to equal current index
+            largestIndex = index;
 
             // Push everything back to original stack so long as temp is not empty
             while(!tempStack.isEmpty()) {
